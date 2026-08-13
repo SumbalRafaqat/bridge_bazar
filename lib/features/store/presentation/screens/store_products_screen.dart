@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_dimensions.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/routes/app_router.dart';
 import '../../../../core/widgets/app_bottom_nav_bar.dart';
 import '../../../../core/widgets/quantity_selector.dart';
 import '../../../../core/widgets/status_chip.dart';
@@ -181,7 +182,7 @@ class _StoreView extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: AppBottomNavBar(currentIndex: 0, onTap: (i) {}),
+      bottomNavigationBar: AppBottomNavBar(currentIndex: 0, onTap: (i) => AppRouter.navigateToTab(context, i)),
     );
   }
 }

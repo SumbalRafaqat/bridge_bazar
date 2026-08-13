@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_dimensions.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/routes/app_router.dart';
 import '../../../../core/widgets/app_bottom_nav_bar.dart';
 import '../../../../core/widgets/search_bar_widget.dart';
 import '../../data/datasources/category_remote_datasource.dart';
@@ -125,10 +126,7 @@ class _CategoriesViewState extends State<_CategoriesView> {
       ),
       bottomNavigationBar: AppBottomNavBar(
         currentIndex: _navIndex,
-        onTap: (i) {
-          // TODO: Home/Cart/Profile screens ready hone par yahan
-          // Navigator se un par jump karna hai.
-        },
+        onTap: (i) => AppRouter.navigateToTab(context, i),
       ),
     );
   }

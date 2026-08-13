@@ -4,9 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_dimensions.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/routes/app_router.dart';
 import '../../../../core/widgets/app_bottom_nav_bar.dart';
 import '../../../../core/widgets/product_card.dart';
 import '../../../../core/widgets/search_bar_widget.dart';
+import '../../../categories/presentation/screens/categories_screen.dart';
+import '../../../store/presentation/screens/store_products_screen.dart';
 import '../../data/datasources/home_remote_datasource.dart';
 import '../../data/repositories/home_repository_impl.dart';
 import '../../domain/usecases/get_home_feed_usecase.dart';
@@ -175,7 +178,9 @@ class _HomeViewState extends State<_HomeView> {
                   CategoryGrid(
                     categories: feed.categories,
                     onCategoryTap: (category) {
-                      // TODO: Categories screen par navigate with filter
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => const CategoriesScreen()),
+                      );
                     },
                   ),
                   const SizedBox(height: AppDimensions.xl),
@@ -194,7 +199,11 @@ class _HomeViewState extends State<_HomeView> {
                         return StoreCard(
                           store: store,
                           onTap: () {
-                            // TODO: Store Products screen par navigate
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => StoreProductsScreen(storeId: store.id, storeName: store.name),
+                              ),
+                            );
                           },
                         );
                       },
@@ -209,7 +218,7 @@ class _HomeViewState extends State<_HomeView> {
       // ===== Bottom Nav Bar (1:360) =====
       bottomNavigationBar: AppBottomNavBar(
         currentIndex: _navIndex,
-        onTap: (i) => setState(() => _navIndex = i),
+        onTap: (i) => AppRouter.navigateToTab(context, i),
       ),
     );
   }

@@ -6,10 +6,12 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_dimensions.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/app_text_field.dart';
+import '../../../../features/home/presentation/screens/home_screen.dart';
 import '../../data/datasources/auth_remote_datasource.dart';
 import '../../data/repositories/auth_repository_impl.dart';
 import '../../domain/usecases/login_usecase.dart';
 import '../../domain/usecases/signup_usecase.dart';
+import '../../domain/entities/user_role.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
@@ -20,8 +22,15 @@ import '../widgets/social_auth_buttons.dart';
 /// mutabiq): input fields ka bg #EFF4FF (surfaceContainerLow) hai,
 /// border #6C7A71 (outline, gehra) hai — Login mein yeh halka tha.
 /// Social buttons yahan "box" (radius 8) hain, Login mein "pill" thay.
+///
+/// selectedRole: Welcome screen se aata hai (Shopper/Seller). Abhi UI
+/// mein iska koi visual asar nahi (Figma design mein role field nahi
+/// dikhaya gaya), lekin future mein backend ko "role" bhejne ke kaam
+/// aayega — is liye field yahan store kar rahe hain.
 class SignupScreen extends StatelessWidget {
-  const SignupScreen({super.key});
+  final UserRole? selectedRole;
+
+  const SignupScreen({super.key, this.selectedRole});
 
   @override
   Widget build(BuildContext context) {
@@ -30,13 +39,15 @@ class SignupScreen extends StatelessWidget {
         loginUseCase: LoginUseCase(AuthRepositoryImpl(AuthRemoteDataSource())),
         signupUseCase: SignupUseCase(AuthRepositoryImpl(AuthRemoteDataSource())),
       ),
-      child: const _SignupView(),
+      child: _SignupView(selectedRole: selectedRole),
     );
   }
 }
 
 class _SignupView extends StatefulWidget {
-  const _SignupView();
+  final UserRole? selectedRole;
+
+  const _SignupView({this.selectedRole});
 
   @override
   State<_SignupView> createState() => _SignupViewState();
@@ -61,13 +72,13 @@ class _SignupViewState extends State<_SignupView> {
   void _onCreateAccountPressed() {
     if (_formKey.currentState!.validate()) {
       context.read<AuthBloc>().add(
-        SignupRequested(
-          fullName: _fullNameController.text.trim(),
-          email: _emailController.text.trim(),
-          phone: _phoneController.text.trim(),
-          password: _passwordController.text,
-        ),
-      );
+            SignupRequested(
+              fullName: _fullNameController.text.trim(),
+              email: _emailController.text.trim(),
+              phone: _phoneController.text.trim(),
+              password: _passwordController.text,
+            ),
+          );
     }
   }
 
@@ -92,7 +103,10 @@ class _SignupViewState extends State<_SignupView> {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
-            // TODO: Home/Welcome screen bann jaye to yahan navigate karein.
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (_) => const HomeScreen()),
+              (route) => false,
+            );
           } else if (state is AuthFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.message), backgroundColor: AppColors.error),
@@ -145,7 +159,7 @@ class _SignupViewState extends State<_SignupView> {
                         prefixIcon: const Icon(Icons.person_outline, size: 16, color: AppColors.onSurfaceVariant),
                         fillColor: AppColors.surfaceContainerLow, // #EFF4FF
                         borderColor: AppColors.outline, // #6C7A71
-                        validator: (v) => (v == null || v.trim().isEmpty) ? 'Naam likhein' : null,
+                        validator: (v) => (v == null || v.trim().isEmpty) ? 'Please enter your name' : null,
                       ),
                       const SizedBox(height: AppDimensions.md),
 
@@ -159,8 +173,8 @@ class _SignupViewState extends State<_SignupView> {
                         fillColor: AppColors.surfaceContainerLow,
                         borderColor: AppColors.outline,
                         validator: (v) {
-                          if (v == null || v.trim().isEmpty) return 'Email likhein';
-                          if (!v.contains('@')) return 'Sahi email likhein';
+                          if (v == null || v.trim().isEmpty) return 'Please enter your email';
+                          if (!v.contains('@')) return 'Please enter a valid email';
                           return null;
                         },
                       ),
@@ -175,7 +189,7 @@ class _SignupViewState extends State<_SignupView> {
                         prefixIcon: const Icon(Icons.call_outlined, size: 15, color: AppColors.onSurfaceVariant),
                         fillColor: AppColors.surfaceContainerLow,
                         borderColor: AppColors.outline,
-                        validator: (v) => (v == null || v.trim().isEmpty) ? 'Phone number likhein' : null,
+                        validator: (v) => (v == null || v.trim().isEmpty) ? 'Please enter your phone number' : null,
                       ),
                       const SizedBox(height: AppDimensions.md),
 
@@ -189,8 +203,8 @@ class _SignupViewState extends State<_SignupView> {
                         fillColor: AppColors.surfaceContainerLow,
                         borderColor: AppColors.outline,
                         validator: (v) {
-                          if (v == null || v.isEmpty) return 'Password likhein';
-                          if (v.length < 6) return 'Kam se kam 6 characters';
+                          if (v == null || v.isEmpty) return 'Please create a password';
+                          if (v.length < 6) return 'Password must be at least 6 characters';
                           return null;
                         },
                       ),
@@ -212,14 +226,14 @@ class _SignupViewState extends State<_SignupView> {
                               ),
                               child: state is AuthLoading
                                   ? const SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
-                              )
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                                    )
                                   : Text(
-                                'Create Account',
-                                style: AppTextStyles.labelLg.copyWith(color: AppColors.onPrimary),
-                              ),
+                                      'Create Account',
+                                      style: AppTextStyles.labelLg.copyWith(color: AppColors.onPrimary),
+                                    ),
                             ),
                           );
                         },

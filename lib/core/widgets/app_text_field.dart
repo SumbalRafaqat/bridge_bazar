@@ -83,14 +83,14 @@ class _AppTextFieldState extends State<AppTextField> {
             prefixIconConstraints: const BoxConstraints(minWidth: 33, minHeight: 17),
             suffixIcon: widget.obscureText
                 ? IconButton(
-              // Figma: "Button - Toggle password visibility"
-              icon: Icon(
-                _obscured ? Icons.visibility_off_outlined : Icons.visibility_outlined,
-                size: 18,
-                color: AppColors.onSurfaceVariant,
-              ),
-              onPressed: () => setState(() => _obscured = !_obscured),
-            )
+                    // Figma: "Button - Toggle password visibility"
+                    icon: Icon(
+                      _obscured ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                      size: 18,
+                      color: AppColors.onSurfaceVariant,
+                    ),
+                    onPressed: () => setState(() => _obscured = !_obscured),
+                  )
                 : null,
             contentPadding: const EdgeInsets.symmetric(
               horizontal: AppDimensions.sm,

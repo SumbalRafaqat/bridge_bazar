@@ -1,2 +1,9 @@
-// TODO: is file ka code abhi nahi likha gaya.
-// Placeholder hai - folder structure complete karne ke liye banaya gaya.
+import '../entities/product_entity.dart';
+import '../repositories/store_repository.dart';
+
+class GetStoreProductsUseCase {
+  final StoreRepository repository;
+  GetStoreProductsUseCase(this.repository);
+
+  Future<List<ProductEntity>> call(String storeId) => repository.getStoreProducts(storeId);
+}

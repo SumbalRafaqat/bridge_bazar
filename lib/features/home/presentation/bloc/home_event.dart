@@ -1,2 +1,12 @@
-// TODO: is file ka code abhi nahi likha gaya.
-// Placeholder hai - folder structure complete karne ke liye banaya gaya.
+import 'package:equatable/equatable.dart';
+
+abstract class HomeEvent extends Equatable {
+  const HomeEvent();
+  @override
+  List<Object?> get props => [];
+}
+
+/// Home screen khulte hi (ya pull-to-refresh par) fire hota hai.
+class HomeFeedRequested extends HomeEvent {
+  const HomeFeedRequested();
+}

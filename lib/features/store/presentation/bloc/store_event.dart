@@ -1,2 +1,14 @@
-// TODO: is file ka code abhi nahi likha gaya.
-// Placeholder hai - folder structure complete karne ke liye banaya gaya.
+import 'package:equatable/equatable.dart';
+
+abstract class StoreEvent extends Equatable {
+  const StoreEvent();
+  @override
+  List<Object?> get props => [];
+}
+
+class StoreProductsRequested extends StoreEvent {
+  final String storeId;
+  const StoreProductsRequested(this.storeId);
+  @override
+  List<Object?> get props => [storeId];
+}

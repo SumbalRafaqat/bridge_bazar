@@ -1,2 +1,26 @@
-// TODO: is file ka code abhi nahi likha gaya.
-// Placeholder hai - folder structure complete karne ke liye banaya gaya.
+import 'package:equatable/equatable.dart';
+import '../../data/models/category_item_model.dart';
+
+abstract class CategoryState extends Equatable {
+  const CategoryState();
+  @override
+  List<Object?> get props => [];
+}
+
+class CategoryLoading extends CategoryState {
+  const CategoryLoading();
+}
+
+class CategoryLoaded extends CategoryState {
+  final List<CategoryItemModel> categories;
+  const CategoryLoaded(this.categories);
+  @override
+  List<Object?> get props => [categories];
+}
+
+class CategoryError extends CategoryState {
+  final String message;
+  const CategoryError(this.message);
+  @override
+  List<Object?> get props => [message];
+}

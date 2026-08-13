@@ -7,6 +7,7 @@ import '../../../../core/constants/app_dimensions.dart';
 import '../../../../core/di/injection_container.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/app_text_field.dart';
+import '../../../../features/home/presentation/screens/home_screen.dart';
 import '../../data/datasources/auth_remote_datasource.dart';
 import '../../data/repositories/auth_repository_impl.dart';
 import '../../domain/usecases/login_usecase.dart';
@@ -15,7 +16,7 @@ import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
 import '../widgets/social_auth_buttons.dart';
-import 'signup_screen.dart';
+import 'welcome_screen.dart';
 
 /// LoginScreen: Figma "Login to BazaarBridge" frame se EXACT match.
 /// BlocProvider yahan bloc create karta hai — is se AuthBloc sirf
@@ -59,11 +60,11 @@ class _LoginViewState extends State<_LoginView> {
   void _onLoginPressed() {
     if (_formKey.currentState!.validate()) {
       context.read<AuthBloc>().add(
-        LoginRequested(
-          emailOrPhone: _emailOrPhoneController.text.trim(),
-          password: _passwordController.text,
-        ),
-      );
+            LoginRequested(
+              emailOrPhone: _emailOrPhoneController.text.trim(),
+              password: _passwordController.text,
+            ),
+          );
     }
   }
 
@@ -91,8 +92,10 @@ class _LoginViewState extends State<_LoginView> {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
-            // TODO: Home screen banne ke baad yahan navigate karna:
-            // Navigator.pushReplacementNamed(context, AppRoutes.home);
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (_) => const HomeScreen()),
+              (route) => false,
+            );
           } else if (state is AuthFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.message), backgroundColor: AppColors.error),
@@ -154,7 +157,7 @@ class _LoginViewState extends State<_LoginView> {
                             borderColor: AppColors.outlineVariant,
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
-                                return 'Email ya phone number likhein';
+                                return 'Please enter your email or phone number';
                               }
                               return null;
                             },
@@ -171,7 +174,7 @@ class _LoginViewState extends State<_LoginView> {
                             borderColor: AppColors.outlineVariant,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Password likhna zaroori hai';
+                                return 'Password is required';
                               }
                               return null;
                             },
@@ -210,17 +213,17 @@ class _LoginViewState extends State<_LoginView> {
                                   ),
                                   child: state is AuthLoading
                                       ? const SizedBox(
-                                    width: 20,
-                                    height: 20,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      color: Colors.white,
-                                    ),
-                                  )
+                                          width: 20,
+                                          height: 20,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                            color: Colors.white,
+                                          ),
+                                        )
                                       : Text(
-                                    'Log In',
-                                    style: AppTextStyles.labelLg.copyWith(color: AppColors.onPrimary),
-                                  ),
+                                          'Log In',
+                                          style: AppTextStyles.labelLg.copyWith(color: AppColors.onPrimary),
+                                        ),
                                 ),
                               );
                             },
@@ -268,7 +271,7 @@ class _LoginViewState extends State<_LoginView> {
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
                                     Navigator.of(context).push(
-                                      MaterialPageRoute(builder: (_) => const SignupScreen()),
+                                      MaterialPageRoute(builder: (_) => const WelcomeScreen()),
                                     );
                                   },
                               ),

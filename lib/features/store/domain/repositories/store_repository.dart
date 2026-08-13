@@ -1,2 +1,5 @@
-// TODO: is file ka code abhi nahi likha gaya.
-// Placeholder hai - folder structure complete karne ke liye banaya gaya.
+import '../entities/product_entity.dart';
+
+abstract class StoreRepository {
+  Future<List<ProductEntity>> getStoreProducts(String storeId);
+}

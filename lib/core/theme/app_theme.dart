@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_dimensions.dart';
 import 'app_text_styles.dart';
@@ -13,7 +14,10 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       scaffoldBackgroundColor: AppColors.background,
-      fontFamily: AppTextStyles.fontFamily,
+      // GoogleFonts.interTextTheme() poori app ke DEFAULT text ko
+      // (jaise wo Text() widgets jo humari custom AppTextStyles use
+      // nahi kar rahe) bhi real Inter font deta hai — fallback safe.
+      textTheme: GoogleFonts.interTextTheme(),
       colorScheme: const ColorScheme.light(
         primary: AppColors.primary,
         onPrimary: AppColors.onPrimary,

@@ -1,2 +1,11 @@
-// TODO: is file ka code abhi nahi likha gaya.
-// Placeholder hai - folder structure complete karne ke liye banaya gaya.
+import 'package:equatable/equatable.dart';
+
+abstract class CategoryEvent extends Equatable {
+  const CategoryEvent();
+  @override
+  List<Object?> get props => [];
+}
+
+class CategoriesRequested extends CategoryEvent {
+  const CategoriesRequested();
+}

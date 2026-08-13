@@ -1,2 +1,11 @@
-// TODO: is file ka code abhi nahi likha gaya.
-// Placeholder hai - folder structure complete karne ke liye banaya gaya.
+import 'package:flutter/material.dart';
+
+/// CategoryModel: "Explore Categories" grid ka ek item
+/// (Figma: Fruits & Veg, Dairy, Meat, Snacks).
+class CategoryModel {
+  final String id;
+  final String name;
+  final IconData icon;
+
+  const CategoryModel({required this.id, required this.name, required this.icon});
+}

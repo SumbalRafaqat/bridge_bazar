@@ -1,2 +1,5 @@
-// TODO: is file ka code abhi nahi likha gaya.
-// Placeholder hai - folder structure complete karne ke liye banaya gaya.
+import '../../data/models/category_item_model.dart';
+
+abstract class CategoryRepository {
+  Future<List<CategoryItemModel>> getCategories();
+}

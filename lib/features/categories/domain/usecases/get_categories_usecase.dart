@@ -1,2 +1,9 @@
-// TODO: is file ka code abhi nahi likha gaya.
-// Placeholder hai - folder structure complete karne ke liye banaya gaya.
+import '../../data/models/category_item_model.dart';
+import '../repositories/category_repository.dart';
+
+class GetCategoriesUseCase {
+  final CategoryRepository repository;
+  GetCategoriesUseCase(this.repository);
+
+  Future<List<CategoryItemModel>> call() => repository.getCategories();
+}
